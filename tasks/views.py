@@ -1,6 +1,7 @@
 from django.views import generic
 from .models import Task, Tag
 from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404, redirect
 
 
 class IndexView(generic.ListView):
@@ -63,3 +64,11 @@ class TaskDeleteView(generic.DeleteView):
     model = Task
     template_name = "tasks/task_confirm_delete.html"
     success_url = reverse_lazy("tasks:index")
+
+
+class ToggleTaskStatusView(generic.View):
+    def get(self, request, pk, *args, **kwargs):
+        task = get_object_or_404(Task, pk=pk)
+        task.is_done = not task.is_done
+        task.save()
+        return redirect("tasks:index")
