@@ -48,8 +48,8 @@
               {% empty %}
                 <span class="text-muted-light">No tags</span>
               {% endfor %}
-              <a href="#" class="text-primary ml-2">Update</a>
-              <a href="#" class="text-danger ml-1">Delete</a>
+              <a href="{% url 'tasks:task-update' pk=task.id %}" class="text-primary ml-2">Update</a>
+              <a href="{% url 'tasks:task-delete' pk=task.id %}" class="text-danger ml-1">Delete</a>
             </p>
           </div>
 
