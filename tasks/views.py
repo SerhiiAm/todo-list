@@ -18,3 +18,10 @@ class IndexView(generic.TemplateView):
         context["num_visits"] = num_visits
 
         return context
+
+
+class TagListView(generic.ListView):
+    model = Tag
+    context_object_name = "tag_list"
+    template_name = "tasks/tag_list.html"
+    paginate_by = 5
