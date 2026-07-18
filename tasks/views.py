@@ -8,6 +8,7 @@ class IndexView(generic.ListView):
     model = Task
     template_name = "tasks/index.html"
     context_object_name = "tasks_list"
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
