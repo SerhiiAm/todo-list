@@ -1,5 +1,6 @@
 from django.views import generic
 from .models import Task, Tag
+from django.urls import reverse_lazy
 
 
 class IndexView(generic.TemplateView):
@@ -25,3 +26,23 @@ class TagListView(generic.ListView):
     context_object_name = "tag_list"
     template_name = "tasks/tag_list.html"
     paginate_by = 5
+
+
+class TagCreateView(generic.CreateView):
+    model = Tag
+    fields = ["name"]
+    template_name = "tasks/tag_form.html"
+    success_url = reverse_lazy("tasks:tag-list")
+
+
+class TagUpdateView(generic.UpdateView):
+    model = Tag
+    fields = ["name"]
+    template_name = "tasks/tag_form.html"
+    success_url = reverse_lazy("tasks:tag-list")
+
+
+class TagDeleteView(generic.DeleteView):
+    model = Tag
+    template_name = "tasks/tag_confirm_delete.html"
+    success_url = reverse_lazy("tasks:tag-list")
