@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mt-3 mb-4">
+    <h1>TODO list</h1>
+
+    <a href="{% url 'tasks:task-create' %}" class="btn btn-primary">Add task</a>
+  </div>
+
+
+  <div class="card bg-light mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Dynamic Content & Statistics</h5>
+      <ul class="mb-0">
+        <li><strong>Total Tasks:</strong> {{ num_tasks }}</li>
+        <li><strong>Total Tags:</strong> {{ num_tags }}</li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="tasks-container">
+    {% for task in tasks_list %}
+      <div class="card mb-3 shadow-sm">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="card-title mb-1">
+              {{ task.content }}
+              {% if task.is_done %}
+                <span class="text-success font-weight-bold ml-2">Done</span>
+              {% else %}
+                <span class="text-danger font-weight-bold ml-2">Not done</span>
+              {% endif %}
+            </h5>
+
+            <p class="card-text text-muted small mb-1">
+              Created: {{ task.created_at|date:"F d, Y, g:i a" }}
+              {% if task.deadline %}
+                <span
+                    class="text-danger font-weight-bold ml-2">Deadline: {{ task.deadline|date:"F d, Y, g:i a" }}</span>
+              {% endif %}
+            </p>
+
+            <p class="card-text text-muted small mb-0">
+              Tags:
+              {% for tag in task.tags.all %}
+                <span class="badge badge-secondary">{{ tag.name }}</span>
+              {% empty %}
+                <span class="text-muted-light">No tags</span>
+              {% endfor %}
+              <a href="{% url 'tasks:task-update' pk=task.id %}" class="text-primary ml-2">Update</a>
+              <a href="{% url 'tasks:task-delete' pk=task.id %}" class="text-danger ml-1">Delete</a>
+            </p>
+          </div>
+
+          <div>
+            {% if task.is_done %}
+              <form action="{% url 'tasks:task-toggle' pk=task.id %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-secondary">Undo</button>
+              </form>
+            {% else %}
+              <form action="{% url 'tasks:task-toggle' pk=task.id %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Complete</button>
+              </form>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>No tasks yet!</p>
+    {% endfor %}
+  </div>
+
+
+  <p class="text-muted mt-4">
+    You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}.
+  </p>
+
+{% endblock %}
