@@ -55,9 +55,15 @@
 
           <div>
             {% if task.is_done %}
-              <a href="{% url 'tasks:task-toggle' pk=task.id %}" class="btn btn-secondary">Undo</a>
+              <form action="{% url 'tasks:task-toggle' pk=task.id %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-secondary">Undo</button>
+              </form>
             {% else %}
-              <a href="{% url 'tasks:task-toggle' pk=task.id %}" class="btn btn-success">Complete</a>
+              <form action="{% url 'tasks:task-toggle' pk=task.id %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Complete</button>
+              </form>
             {% endif %}
           </div>
         </div>

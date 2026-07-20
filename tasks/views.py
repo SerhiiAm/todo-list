@@ -68,7 +68,8 @@ class TaskDeleteView(generic.DeleteView):
 
 
 class ToggleTaskStatusView(generic.View):
-    def get(self, request, pk, *args, **kwargs):
+
+    def post(self, request, pk, *args, **kwargs):
         task = get_object_or_404(Task, pk=pk)
         task.is_done = not task.is_done
         task.save()
